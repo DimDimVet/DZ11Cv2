@@ -41,12 +41,12 @@ typedef struct
 	int gradeLesson;
 } itemStudent;
 
-int count = 0;
+int countJournalStudent = 0;
 itemStudent *journalStudent;
 
-void printConsoleJournal(itemStudent *journalStudent, int count);
-void randomFullStruct(int count);
-void manualFullStruct(int count);
+void printConsoleJournalStudent(itemStudent *journalStudent, int count);
+void randomFullJournalStudent(int count);
+void manualFullJournalStudent(int count);
 char* pressButton(int *sizeStr);
 int validationButton();
 
@@ -58,14 +58,14 @@ void listStudent()
 	int temp = validationButton();
 	if (temp == RANDOM)
 	{
-		count = 10;
-		randomFullStruct(count);
-		printConsoleJournal(journalStudent, count);
+		countJournalStudent = 10;
+		randomFullJournalStudent(countJournalStudent);
+		printConsoleJournalStudent(journalStudent, countJournalStudent);
 	}
 	else if (temp == MANUAL)
 	{
-		count = 1;
-		manualFullStruct(count);
+		countJournalStudent = 1;
+		manualFullJournalStudent(countJournalStudent);
 	}
 	else
 	{
@@ -131,7 +131,7 @@ char* pressButton(int *sizeStr)
 	return pressButton;
 }
 
-void randomFullStruct(int count)
+void randomFullJournalStudent(int count)
 {
 	journalStudent = (itemStudent*) malloc(count * sizeof(itemStudent));
 	char tempStr[250];
@@ -164,7 +164,7 @@ void randomFullStruct(int count)
 	}
 }
 
-void manualFullStruct(int count)
+void manualFullJournalStudent(int count)
 {
 	int tempRezult;
 	char *tempStr =
@@ -314,20 +314,20 @@ void manualFullStruct(int count)
 		}
 
 		count++;
-		manualFullStruct(count);
+		manualFullJournalStudent(count);
 	}
 	else if (tempRezult == NO)
 	{
-		printConsoleJournal(journalStudent, count);
+		printConsoleJournalStudent(journalStudent, count);
 	}
 	else
 	{
 		printf("error press button!\n");
-		manualFullStruct(count);
+		manualFullJournalStudent(count);
 	}
 }
 
-void printConsoleJournal(itemStudent journalStudent[], int count)
+void printConsoleJournalStudent(itemStudent *journalStudent, int count)
 {
 	printf("\n");
 	char strGender[20];
