@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define TITLE1 "Is find in List Book\n"
 #define INSTRUCTION1 "Mode: Find book in base\n"
@@ -33,7 +34,18 @@ typedef struct
 	char *yeaRelease;
 } itemBook;
 
-int countJournalBook = 3;
+typedef struct
+{
+	char *last;
+	char *name;
+	char *middle;
+	char *title;
+	int *isbn;
+	char *yea;
+	itemBook *journalFindRezult;
+} findTask;
+
+int countJournalBook = 100;
 int countAvtor = 0;
 itemAvtor *collectionAvtor;
 itemBook *journalBook;
@@ -44,6 +56,7 @@ itemAvtor* randomFullAvtor();
 itemISBN randomFullISBN();
 char* randomFullYeaRelease();
 void printConsoleJournalBook(itemBook *journalBook, int count);
+void findJournalBook(itemBook *journalBook, int count, findTask findTask);
 void findBook();
 
 void listBook()
@@ -199,7 +212,6 @@ char* randomFullYeaRelease()
 			tempYear[3]);
 
 	return str;
-
 }
 
 void printConsoleJournalBook(itemBook *journalBook, int count)
@@ -217,6 +229,7 @@ void printConsoleJournalBook(itemBook *journalBook, int count)
 		printf("Avtors:\n");
 		for (int a = 0; a < tempCount; a++)
 		{
+
 			printf("Avtor %d: %s %s %s\n", a, tempAvtors[a].lastName,
 					tempAvtors[a].name, tempAvtors[a].middleName);
 		}
@@ -260,9 +273,7 @@ void printConsoleJournalBook(itemBook *journalBook, int count)
 
 		//YeaRelease
 		printf("Yea Release: %s\n\n", journalBook[b].yeaRelease);
-
 	}
-
 }
 
 //GenerWord
@@ -281,7 +292,6 @@ char* generateWord()
 		{
 			word[i] = 'a' + rand() % 26;
 		}
-
 	}
 	word[wordLength] = '\0';
 
@@ -291,12 +301,138 @@ char* generateWord()
 //FindBook
 void findBook()
 {
-	char pressButton[100];
+	char str[100];
+	findTask tempFindTask;
+	char pressButton[25];
 	printf("Find Book\n");
-	/*scanf("%s", pressButton);
-	pressButton[100] = '\0';
-	printf("1%s", pressButton);
-	scanf("%s", pressButton);
-	pressButton[100] = '\0';
-	printf("2%s", pressButton);*/
+	printf("Avtor: Last->press 1, Name->press 2, Middle->press 3,\n");
+	printf("Title book: ->press 4,\nYea release->press 5\n");
+
+	scanf("%s", str);
+	int search = strtol(str, NULL, 10);
+	printf("press -> %d\n", search);
+
+	switch (search)
+	{
+	case 1:
+		printf("In Last:");
+		scanf("%s", pressButton);
+		tempFindTask.last = pressButton;
+		tempFindTask.name = NULL;
+		tempFindTask.middle = NULL;
+		tempFindTask.title = NULL;
+		tempFindTask.yea = NULL;
+		break;
+	case 2:
+		printf("In Name:");
+		scanf("%s", pressButton);
+		tempFindTask.last = NULL;
+		tempFindTask.name = pressButton;
+		tempFindTask.middle = NULL;
+		tempFindTask.title = NULL;
+		tempFindTask.yea = NULL;
+		break;
+	case 3:
+		printf("In Middle:");
+		scanf("%s", pressButton);
+		tempFindTask.last = NULL;
+		tempFindTask.name = NULL;
+		tempFindTask.middle = pressButton;
+		tempFindTask.title = NULL;
+		tempFindTask.yea = NULL;
+		break;
+	case 4:
+		printf("In Title book:");
+		scanf("%s", pressButton);
+		tempFindTask.last = NULL;
+		tempFindTask.name = NULL;
+		tempFindTask.middle = NULL;
+		tempFindTask.title = pressButton;
+		tempFindTask.yea = NULL;
+		break;
+	case 5:
+		printf("In Yea release:");
+		scanf("%s", pressButton);
+		tempFindTask.last = NULL;
+		tempFindTask.name = NULL;
+		tempFindTask.middle = NULL;
+		tempFindTask.title = NULL;
+		tempFindTask.yea = pressButton;
+		break;
+
+	default:
+		printf("error press button!\n");
+		findBook();
+		break;
+	}
+
+	findJournalBook(journalBook, countJournalBook, tempFindTask);
 }
+
+void findJournalBook(itemBook *journalBook, int count, findTask findTask)
+{
+	int countFind = 0;
+	int tempCount;
+	itemAvtor *tempAvtors;
+	findTask.journalFindRezult = (itemBook*) malloc(count * sizeof(itemBook));
+
+	for (int b = 0; b < count; b++)
+	{
+		//FIO
+		tempCount = journalBook[b].countAvtor;
+		tempAvtors = journalBook[b].avtor;
+		for (int a = 0; a < tempCount; a++)
+		{
+			if (findTask.last != NULL)
+			{
+				if (strstr(tempAvtors[a].lastName, findTask.last) != NULL)
+				{
+					countFind++;
+					findTask.journalFindRezult[countFind - 1] = journalBook[b];
+				}
+			}
+			else if (findTask.name != NULL)
+			{
+
+				if (strstr(tempAvtors[a].name, findTask.name) != NULL)
+				{
+					countFind++;
+					findTask.journalFindRezult[countFind - 1] = journalBook[b];
+				}
+			}
+			else if (findTask.middle != NULL)
+			{
+
+				if (strstr(tempAvtors[a].middleName, findTask.middle) != NULL)
+				{
+					countFind++;
+					findTask.journalFindRezult[countFind - 1] = journalBook[b];
+				}
+			}
+		}
+
+		//TitleBook
+		if (findTask.title != NULL)
+		{
+
+			if (strstr(journalBook[b].titleBook, findTask.title) != NULL)
+			{
+				countFind++;
+				findTask.journalFindRezult[countFind - 1] = journalBook[b];
+			}
+		}
+
+		//YeaRelease
+		if (findTask.yea != NULL)
+		{
+			if (strstr(journalBook[b].yeaRelease, findTask.yea) != NULL)
+			{
+				countFind++;
+				findTask.journalFindRezult[countFind - 1] = journalBook[b];
+			}
+		}
+	}
+
+	printConsoleJournalBook(findTask.journalFindRezult, countFind);
+}
+
