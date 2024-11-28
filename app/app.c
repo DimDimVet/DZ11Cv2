@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TASK 3 // 1, 2, 3
+#define TASK 3
+// 1, 2, 3
 
 #if TASK == 1
 #include "listStudent.h"
