@@ -5,8 +5,8 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define TITLE1 "Is find in List Book\n"
-#define INSTRUCTION1 "Mode: Find book in base\n"
+#define TITLE "Is find in List Book\n"
+#define INSTRUCTION "Mode: Find book in base\n"
 
 typedef struct
 {
@@ -61,8 +61,8 @@ void findBook();
 
 void listBook()
 {
-	printf(TITLE1);
-	printf(INSTRUCTION1);
+	printf(TITLE);
+	printf(INSTRUCTION);
 
 	randomFullJournalBook(countJournalBook);
 	printConsoleJournalBook(journalBook, countJournalBook);

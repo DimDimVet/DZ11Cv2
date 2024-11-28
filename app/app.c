@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TASK 2 // 1, 2, 3
+#define TASK 3 // 1, 2, 3
 
 #if TASK == 1
 #include "listStudent.h"
@@ -10,7 +10,8 @@
 #include "listBook.h"
 
 #elif TASK == 3
-//void listWork();
+#include "listWork.h"
+
 #endif
 
 int main()
@@ -21,9 +22,9 @@ int main()
 	listStudent();
 #elif TASK == 2
 	listBook();
-	#elif TASK == 3
-	//
-	#endif
+#elif TASK == 3
+	listWork();
+#endif
 
 	return 0;
 }
